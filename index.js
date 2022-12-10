@@ -24,10 +24,18 @@ const run = async () => {
     app.get("/blogs", async (req, res) => {
       console.log('get blogs');
       const cursor = blogCollection.find({});
-      const blog = await cursor.toArray();
+      const blogs = await cursor.toArray();
+
+      res.send({ status: true, data: blogs });
+    });
+
+    app.get("/blog/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const blog = await blogCollection.findOne(query);
 
       res.send({ status: true, data: blog });
-    });
+    })
 
     app.post("/blog", async (req, res) => {
       const blog = req.body;
